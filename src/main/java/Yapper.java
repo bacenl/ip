@@ -1,11 +1,14 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * The Yapper class is the Chatbot for CS2103T.
  */
 public class Yapper {
     private Scanner inputScanner;
-    private ArrayList<String> tasks = new ArrayList<>();
+    private ArrayList<Task> tasks = new ArrayList<Task>();
 
     /**
      * Constructs a new Yapper chatbot instance.
@@ -27,13 +30,32 @@ public class Yapper {
     }
 
     private void appendToList(String input) {
-        tasks.add(input);
+        Task task = new Task(input);
+        tasks.add(task);
         System.out.printf("added: %s\n", input);
     }
 
     private void printList() {
+        System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             System.out.printf("%d. %s\n", i + 1, tasks.get(i));
+        }
+    }
+
+    private void markTask(String command, boolean isDone) {
+        Pattern markPattern = Pattern.compile("^(mark|unmark) (\\d+)$");
+        Matcher markMatcher = markPattern.matcher(command);
+        if (markMatcher.matches()) {
+            String digits = markMatcher.group(2);
+            int index = Integer.parseInt(digits) - 1;
+            Task task = tasks.get(index);
+            task.setIsDone(isDone);
+            if (isDone) {
+                System.out.println("Nice! I have marked this task as done:");
+            } else {
+                System.out.println("Ok, I have marked this task as not done yet:");
+            }
+            System.out.println(task);
         }
     }
 
@@ -46,6 +68,10 @@ public class Yapper {
                 break;
             } else if (command.equals("list")) {
                 printList();
+            } else if (command.startsWith("mark ")) {
+                markTask(command, true);
+            } else if (command.startsWith("unmark ")) {
+                markTask(command, false);
             } else {
                 appendToList(command);
             }
