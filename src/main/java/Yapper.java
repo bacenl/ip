@@ -54,7 +54,7 @@ public class Yapper {
             }
             System.out.println(task);
         } else {
-            throw new InvalidCommandException("Please ensure the following format (mark / unmark 1)");
+            throw new InvalidCommandException("Please ensure the following format 'mark / unmark (positive integer)'");
         }
     }
 
@@ -64,7 +64,6 @@ public class Yapper {
         if (markMatcher.matches()) {
             String digits = markMatcher.group(1);
             int index = Integer.parseInt(digits) - 1;
-            System.out.println(index);
             if (index >= tasks.size() || index < 0) {
                 throw new InvalidCommandException("Invalid task number. Current list size is " + tasks.size());
             }
@@ -74,7 +73,7 @@ public class Yapper {
             System.out.println(task);
             System.out.printf("Now you have %d tasks in the list.\n", tasks.size());
         } else {
-            throw new InvalidCommandException("Please ensure the following format (mark / unmark 1)");
+            throw new InvalidCommandException("Please ensure the following format 'delete (positive integer)'");
         }
     }
 
