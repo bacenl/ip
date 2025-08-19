@@ -3,8 +3,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.sound.midi.SysexMessage;
-
 /**
  * The Yapper class is the Chatbot for CS2103T.
  */
@@ -31,12 +29,6 @@ public class Yapper {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
-    private void appendToList(String input) {
-        Task task = new Task(input);
-        tasks.add(task);
-        System.out.printf("added: %s\n", input);
-    }
-
     private void printList() {
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
@@ -44,12 +36,16 @@ public class Yapper {
         }
     }
 
-    private void markTask(String command, boolean isDone) {
+    private void markTask(String command, boolean isDone) throws InvalidCommandException {
         Pattern markPattern = Pattern.compile("^(mark|unmark) (\\d+)$");
         Matcher markMatcher = markPattern.matcher(command);
         if (markMatcher.matches()) {
             String digits = markMatcher.group(2);
             int index = Integer.parseInt(digits) - 1;
+            System.out.println(index);
+            if (index >= tasks.size() || index < 0) {
+                throw new InvalidCommandException("Invalid task number. Current list size is " + tasks.size());
+            }
             Task task = tasks.get(index);
             task.setIsDone(isDone);
             if (isDone) {
@@ -58,11 +54,16 @@ public class Yapper {
                 System.out.println("Ok, I have marked this task as not done yet:");
             }
             System.out.println(task);
+        } else {
+            throw new InvalidCommandException("Please ensure the following format (mark / unmark 1)");
         }
     }
 
-    private void addToDo(String command) {
-        String name = command.substring(5);
+    private void addToDo(String command) throws InvalidCommandException {
+        String name = command.substring(5).trim();
+        if (name.isEmpty()) {
+            throw new InvalidCommandException("Description of ToDo cannot be empty");
+        }
         ToDo todo = new ToDo(name);
         System.out.println("Got it. I've added this task:");
         tasks.add(todo);
@@ -70,8 +71,17 @@ public class Yapper {
         System.out.printf("Now you have %d tasks in the list.\n", tasks.size());
     }
 
-    private void addDeadline(String command) {
-        String[] parts = command.substring(9).split("/by", 2);
+    private void addDeadline(String command) throws InvalidCommandException {
+        String[] parts = command.substring(9).trim().split("/by", 2);
+        if (parts.length != 2) {
+            throw new InvalidCommandException("Need /by parameter");
+        }
+        if (parts[0].isEmpty()) {
+            throw new InvalidCommandException("Description of Deadline cannot be empty");
+        }
+        if (parts[1].isEmpty()) {
+            throw new InvalidCommandException("/by of Deadline cannot be empty");
+        }
         Deadline deadline = new Deadline(parts[0].trim(), parts[1].trim());
         System.out.println("Got it. I've added this task:");
         tasks.add(deadline);
@@ -79,9 +89,22 @@ public class Yapper {
         System.out.printf("Now you have %d tasks in the list.\n", tasks.size());
     }
 
-    private void addEvent(String command) {
-        String[] parts = command.substring(6).split("/from|/to");
-        Event event = new Event(parts[0].trim(), parts[1].trim(), parts[2].trim());
+    private void addEvent(String command) throws InvalidCommandException {
+        String[] parts = command.substring(6).trim().split("/from|/to");
+        if (parts.length != 3) {
+            throw new InvalidCommandException("Need both /from and /to parameters");
+        }
+        boolean isFromFirst = command.contains("/from") && (command.indexOf("/from") < command.indexOf("/to"));
+        String description = parts[0].trim();
+        String from = isFromFirst ? parts[1].trim() : parts[2].trim();
+        String to = isFromFirst ? parts[2].trim() : parts[1].trim();
+        if (parts[0].isEmpty()) {
+            throw new InvalidCommandException("Description of Event cannot be empty");
+        }
+        if (from.isEmpty() || to.isEmpty()) {
+            throw new InvalidCommandException("/from or /to of Event cannot be empty");
+        }
+        Event event = new Event(description, from, to);
         System.out.println("Got it. I've added this task:");
         tasks.add(event);
         System.out.println(event);
@@ -92,23 +115,28 @@ public class Yapper {
         while (true) {
             String command = inputScanner.nextLine();
 
-            if (command.equals("bye")) {
-                printExit();
-                break;
-            } else if (command.equals("list")) {
-                printList();
-            } else if (command.startsWith("mark ")) {
-                markTask(command, true);
-            } else if (command.startsWith("unmark ")) {
-                markTask(command, false);
-            } else if (command.startsWith("todo ")) {
-                addToDo(command);
-            } else if (command.startsWith("deadline ")) {
-                addDeadline(command);
-            } else if (command.startsWith("event ")) {
-                addEvent(command);
-            } else {
-                appendToList(command);
+            try {
+                if (command.equals("bye")) {
+                    printExit();
+                    break;
+                } else if (command.equals("list")) {
+                    printList();
+                } else if (command.startsWith("mark ")) {
+                    markTask(command, true);
+                } else if (command.startsWith("unmark ")) {
+                    markTask(command, false);
+                } else if (command.startsWith("todo ")) {
+                    addToDo(command);
+                } else if (command.startsWith("deadline ")) {
+                    addDeadline(command);
+                } else if (command.startsWith("event ")) {
+                    addEvent(command);
+                } else {
+                    throw new InvalidCommandException("Sorry, please enter a "
+                        + " valid commmand (mark / unmark / todo / deadline / event / list)");
+                }
+            } catch (InvalidCommandException e) {
+                System.out.println(e);
             }
         }
     }
@@ -116,4 +144,10 @@ public class Yapper {
         Yapper yapper = new Yapper();
     }
 
+}
+
+class InvalidCommandException extends Exception {
+    public InvalidCommandException(String error) {
+        super(error);
+    }
 }
