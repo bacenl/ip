@@ -42,7 +42,6 @@ public class Yapper {
         if (markMatcher.matches()) {
             String digits = markMatcher.group(2);
             int index = Integer.parseInt(digits) - 1;
-            System.out.println(index);
             if (index >= tasks.size() || index < 0) {
                 throw new InvalidCommandException("Invalid task number. Current list size is " + tasks.size());
             }
@@ -54,6 +53,26 @@ public class Yapper {
                 System.out.println("Ok, I have marked this task as not done yet:");
             }
             System.out.println(task);
+        } else {
+            throw new InvalidCommandException("Please ensure the following format (mark / unmark 1)");
+        }
+    }
+
+    private void deleteTask(String command) throws InvalidCommandException {
+        Pattern markPattern = Pattern.compile("^delete (\\d+)$");
+        Matcher markMatcher = markPattern.matcher(command);
+        if (markMatcher.matches()) {
+            String digits = markMatcher.group(1);
+            int index = Integer.parseInt(digits) - 1;
+            System.out.println(index);
+            if (index >= tasks.size() || index < 0) {
+                throw new InvalidCommandException("Invalid task number. Current list size is " + tasks.size());
+            }
+            Task task = tasks.get(index);
+            tasks.remove(task);
+            System.out.println("Noted. I have removed this task:");
+            System.out.println(task);
+            System.out.printf("Now you have %d tasks in the list.\n", tasks.size());
         } else {
             throw new InvalidCommandException("Please ensure the following format (mark / unmark 1)");
         }
@@ -121,6 +140,8 @@ public class Yapper {
                     break;
                 } else if (command.equals("list")) {
                     printList();
+                } else if (command.startsWith("delete ")) {
+                    deleteTask(command);
                 } else if (command.startsWith("mark ")) {
                     markTask(command, true);
                 } else if (command.startsWith("unmark ")) {
