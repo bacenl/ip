@@ -3,6 +3,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.sound.midi.SysexMessage;
+
 /**
  * The Yapper class is the Chatbot for CS2103T.
  */
@@ -59,6 +61,33 @@ public class Yapper {
         }
     }
 
+    private void addToDo(String command) {
+        String name = command.substring(5);
+        ToDo todo = new ToDo(name);
+        System.out.println("Got it. I've added this task:");
+        tasks.add(todo);
+        System.out.println(todo);
+        System.out.printf("Now you have %d tasks in the list.\n", tasks.size());
+    }
+
+    private void addDeadline(String command) {
+        String[] parts = command.substring(9).split("/by", 2);
+        Deadline deadline = new Deadline(parts[0].trim(), parts[1].trim());
+        System.out.println("Got it. I've added this task:");
+        tasks.add(deadline);
+        System.out.println(deadline);
+        System.out.printf("Now you have %d tasks in the list.\n", tasks.size());
+    }
+
+    private void addEvent(String command) {
+        String[] parts = command.substring(6).split("/from|/to");
+        Event event = new Event(parts[0].trim(), parts[1].trim(), parts[2].trim());
+        System.out.println("Got it. I've added this task:");
+        tasks.add(event);
+        System.out.println(event);
+        System.out.printf("Now you have %d tasks in the list.\n", tasks.size());
+    }
+
     private void listenForCommand() {
         while (true) {
             String command = inputScanner.nextLine();
@@ -72,6 +101,12 @@ public class Yapper {
                 markTask(command, true);
             } else if (command.startsWith("unmark ")) {
                 markTask(command, false);
+            } else if (command.startsWith("todo ")) {
+                addToDo(command);
+            } else if (command.startsWith("deadline ")) {
+                addDeadline(command);
+            } else if (command.startsWith("event ")) {
+                addEvent(command);
             } else {
                 appendToList(command);
             }
