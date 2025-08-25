@@ -1,22 +1,41 @@
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Class to represent Deadline
  */
 public class Deadline extends Task {
     private String due;
 
+    public Deadline() {
+    }
+
     /**
      * Initialize Deadline with name and isDone = false
      */
     public Deadline(String name, String due) {
-        super(name);
+        setName(name);
+        setIsDone(false);
         this.due = due;
     }
 
     /**
      * Initialize Deadline with name and isDone
      */
-    public Deadline(String name, boolean isDone, String due) {
-        super(name, isDone);
+    @JsonCreator
+    public Deadline(@JsonProperty("name") String name,
+                   @JsonProperty("isDone") boolean isDone,
+                   @JsonProperty("due") String due) {
+        setName(name);
+        setIsDone(isDone);
+        this.due = due;
+    }
+
+    public String getDue() {
+        return due;
+    }
+
+    public void setDue(String due) {
         this.due = due;
     }
 

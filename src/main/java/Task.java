@@ -1,10 +1,22 @@
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 /**
  * Class to represent Task
  */
-public class Task {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = ToDo.class, name = "T"),
+    @JsonSubTypes.Type(value = Deadline.class, name = "D"),
+    @JsonSubTypes.Type(value = Event.class, name = "E")
+})
+public abstract class Task {
     private String name;
     private boolean isDone;
 
+    public Task() {
+
+    }
     /**
      * Initialize Task with name and isDone = false
      */
@@ -19,6 +31,13 @@ public class Task {
     public Task(String name, boolean isDone) {
         this.name = name;
         this.isDone = isDone;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setIsDone(boolean isDone) {
