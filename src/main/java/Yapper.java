@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -94,16 +96,25 @@ public class Yapper {
 
     private void addDeadline(String command) throws InvalidCommandException {
         String[] parts = command.substring(9).trim().split("/by", 2);
+        String name = parts[0].trim();
+        String raw_by = parts[1].trim();
+
         if (parts.length != 2) {
             throw new InvalidCommandException("Need /by parameter");
         }
-        if (parts[0].isEmpty()) {
+        if (name.isEmpty()) {
             throw new InvalidCommandException("Description of Deadline cannot be empty");
         }
-        if (parts[1].isEmpty()) {
+        if (raw_by.isEmpty()) {
             throw new InvalidCommandException("/by of Deadline cannot be empty");
         }
-        Deadline deadline = new Deadline(parts[0].trim(), parts[1].trim());
+        LocalDate by;
+        try {
+            by = LocalDate.parse(raw_by);
+        } catch (DateTimeParseException e) {
+            throw new InvalidCommandException("Invalid date format");
+        }
+        Deadline deadline = new Deadline(name, by);
         System.out.println("Got it. I've added this task:");
         tasks.add(deadline);
         System.out.println(deadline);
@@ -117,13 +128,21 @@ public class Yapper {
         }
         boolean isFromFirst = command.contains("/from") && (command.indexOf("/from") < command.indexOf("/to"));
         String description = parts[0].trim();
-        String from = isFromFirst ? parts[1].trim() : parts[2].trim();
-        String to = isFromFirst ? parts[2].trim() : parts[1].trim();
+        String raw_from = isFromFirst ? parts[1].trim() : parts[2].trim();
+        String raw_to = isFromFirst ? parts[2].trim() : parts[1].trim();
         if (parts[0].isEmpty()) {
             throw new InvalidCommandException("Description of Event cannot be empty");
         }
-        if (from.isEmpty() || to.isEmpty()) {
+        if (raw_from.isEmpty() || raw_to.isEmpty()) {
             throw new InvalidCommandException("/from or /to of Event cannot be empty");
+        }
+        LocalDate from;
+        LocalDate to;
+        try {
+            from = LocalDate.parse(raw_from);
+            to = LocalDate.parse(raw_to);
+        } catch (DateTimeParseException e) {
+            throw new InvalidCommandException("Invalid date format");
         }
         Event event = new Event(description, from, to);
         System.out.println("Got it. I've added this task:");
