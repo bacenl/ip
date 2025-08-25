@@ -1,7 +1,12 @@
+package logic.commands;
+
+import models.TaskList;
+import ui.Ui;
+
 /**
  * Represents a command to list all tasks
  */
-class ListCommand extends Command {
+public class ListCommand extends Command {
     /**
      * Executes the list command by displaying all tasks
      *

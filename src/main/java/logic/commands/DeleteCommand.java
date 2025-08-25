@@ -1,7 +1,13 @@
+package logic.commands;
+
+import models.Task;
+import models.TaskList;
+import ui.Ui;
+
 /**
  * Represents a command to delete a task
  */
-class DeleteCommand extends Command {
+public class DeleteCommand extends Command {
     private int index;
 
     /**

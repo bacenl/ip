@@ -1,7 +1,13 @@
+package logic.commands;
+
+import models.TaskList;
+import models.ToDo;
+import ui.Ui;
+
 /**
  * Represents a command to add a todo task
  */
-class ToDoCommand extends Command {
+public class ToDoCommand extends Command {
     private String name;
 
     /**

@@ -1,7 +1,12 @@
+package logic.commands;
+
+import models.TaskList;
+import ui.Ui;
+
 /**
  * Represents a command to mark or unmark a task
  */
-class MarkCommand extends Command {
+public class MarkCommand extends Command {
     private int index;
     private boolean isDone;
 

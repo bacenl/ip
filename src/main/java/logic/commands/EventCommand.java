@@ -1,9 +1,15 @@
+package logic.commands;
+
 import java.time.LocalDate;
+
+import models.Event;
+import models.TaskList;
+import ui.Ui;
 
 /**
  * Represents a command to add an event task
  */
-class EventCommand extends Command {
+public class EventCommand extends Command {
     private String name;
     private LocalDate from;
     private LocalDate to;
