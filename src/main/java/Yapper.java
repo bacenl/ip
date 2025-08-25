@@ -15,6 +15,8 @@ public class Yapper {
      */
     public Yapper() {
         inputScanner = new Scanner(System.in);
+
+        tasks = FileManager.loadTasks();
         printGreet();
         listenForCommand();
     }
@@ -26,6 +28,7 @@ public class Yapper {
     }
 
     private void printExit() {
+        saveTasks();
         System.out.println("Bye. Hope to see you again soon!");
     }
 
@@ -127,6 +130,10 @@ public class Yapper {
         tasks.add(event);
         System.out.println(event);
         System.out.printf("Now you have %d tasks in the list.\n", tasks.size());
+    }
+
+    private void saveTasks() {
+        FileManager.saveTasks(tasks);
     }
 
     private void listenForCommand() {
