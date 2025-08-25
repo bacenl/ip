@@ -1,7 +1,13 @@
+package logic.commands;
+
+import models.TaskList;
+import storage.FileManager;
+import ui.Ui;
+
 /**
  * Represents an exit command to terminate the application
  */
-class ExitCommand extends Command {
+public class ExitCommand extends Command {
     /**
      * Executes the exit command by saving tasks and displaying exit message
      *

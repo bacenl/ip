@@ -1,3 +1,5 @@
+package storage;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +11,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import models.Task;
 
 /**
  * The FileManager class handles saving and loading tasks to/from a JSON file.

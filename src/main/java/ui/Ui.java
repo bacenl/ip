@@ -1,4 +1,9 @@
+package ui;
+
 import java.util.Scanner;
+
+import models.Task;
+import models.TaskList;
 
 /**
  * Deals with interactions with the user

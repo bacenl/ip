@@ -1,9 +1,15 @@
+package logic.commands;
+
 import java.time.LocalDate;
+
+import models.Deadline;
+import models.TaskList;
+import ui.Ui;
 
 /**
  * Represents a command to add a deadline task
  */
-class DeadlineCommand extends Command {
+public class DeadlineCommand extends Command {
     private String name;
     private LocalDate due;
 
