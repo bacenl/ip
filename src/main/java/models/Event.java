@@ -16,7 +16,7 @@ public class Event extends Task {
     private LocalDate to;
 
     /**
-     * Initialize Event with name and isDone = false
+     * Constructs a Event with name and isDone = false
      */
     public Event(String name, LocalDate from, LocalDate to) {
         setName(name);
@@ -26,7 +26,7 @@ public class Event extends Task {
     }
 
     /**
-     * Initialize Event with name and isDone
+     * Constructs a Event with name and isDone
      */
     @JsonCreator
     public Event(@JsonProperty("name") String name,
@@ -40,7 +40,7 @@ public class Event extends Task {
     }
 
     /**
-     * Initialize Event with name and isDone
+     * Constructs a Event with name and isDone
      */
     public Event(String name, boolean isDone, LocalDate from, LocalDate to) {
         setName(name);

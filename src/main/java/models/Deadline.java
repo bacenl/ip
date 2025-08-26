@@ -18,7 +18,7 @@ public class Deadline extends Task {
     }
 
     /**
-     * Initialize Deadline with name and isDone = false
+     * Constructs a Deadline with name and isDone = false
      */
     public Deadline(String name, LocalDate due) {
         setName(name);
@@ -27,7 +27,7 @@ public class Deadline extends Task {
     }
 
     /**
-     * Initialize Deadline with name and isDone
+     * Constructs a Deadline with name and isDone
      */
     public Deadline(String name, boolean isDone, LocalDate due) {
         setName(name);
@@ -36,12 +36,12 @@ public class Deadline extends Task {
     }
 
     /**
-     * Initialize Deadline with name and isDone
+     * Constructs a Deadline with name and isDone
      */
     @JsonCreator
     public Deadline(@JsonProperty("name") String name,
-                   @JsonProperty("isDone") boolean isDone,
-                   @JsonProperty("due") String due) {
+            @JsonProperty("isDone") boolean isDone,
+            @JsonProperty("due") String due) {
         setName(name);
         setIsDone(isDone);
         this.due = LocalDate.parse(due, DATE_FORMATTER);

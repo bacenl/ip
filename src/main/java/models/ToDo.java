@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ToDo extends Task {
     /**
-     * Initialize ToDo with name and isDone = false
+     * Constructs a ToDo with name and isDone = false
      */
     public ToDo(String name) {
         setName(name);
@@ -16,7 +16,7 @@ public class ToDo extends Task {
     }
 
     /**
-     * Initialize ToDo with name and isDone
+     * Constructs a ToDo with name and isDone
      */
     @JsonCreator
     public ToDo(@JsonProperty("name") String name,
