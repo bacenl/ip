@@ -30,9 +30,9 @@ public class Event extends Task {
      */
     @JsonCreator
     public Event(@JsonProperty("name") String name,
-                @JsonProperty("isDone") boolean isDone,
-                @JsonProperty("from") String from,
-                @JsonProperty("to") String to) {
+            @JsonProperty("isDone") boolean isDone,
+            @JsonProperty("from") String from,
+            @JsonProperty("to") String to) {
         setName(name);
         setIsDone(isDone);
         this.from = LocalDate.parse(from, DATE_FORMATTER);

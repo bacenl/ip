@@ -40,8 +40,8 @@ public class Deadline extends Task {
      */
     @JsonCreator
     public Deadline(@JsonProperty("name") String name,
-                   @JsonProperty("isDone") boolean isDone,
-                   @JsonProperty("due") String due) {
+            @JsonProperty("isDone") boolean isDone,
+            @JsonProperty("due") String due) {
         setName(name);
         setIsDone(isDone);
         this.due = LocalDate.parse(due, DATE_FORMATTER);
