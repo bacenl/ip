@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Contains the task list and operations to add/delete tasks
@@ -66,7 +67,7 @@ public class TaskList {
     /**
      * Marks or unmarks a task at the specified position
      *
-     * @param index the index of the task to mark/unmark
+     * @param index  the index of the task to mark/unmark
      * @param isDone true to mark as done, false to mark as not done
      */
     public void markTask(int index, boolean isDone) {
@@ -81,6 +82,17 @@ public class TaskList {
      */
     public List<Task> getTasks() {
         return new ArrayList<>(tasks);
+    }
+
+    /**
+     * Returns a copy of all tasks in the list
+     *
+     * @return a list containing all tasks
+     */
+    public List<Task> filterTasksByKeyword(String keyword) {
+        List<Task> copy = new ArrayList<>(tasks);
+        Stream<Task> filteredStream = copy.stream().filter(task -> task.getName().contains(keyword));
+        return filteredStream.toList();
     }
 
     /**

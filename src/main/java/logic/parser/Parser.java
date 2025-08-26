@@ -11,6 +11,7 @@ import logic.commands.DeadlineCommand;
 import logic.commands.DeleteCommand;
 import logic.commands.EventCommand;
 import logic.commands.ExitCommand;
+import logic.commands.FindCommand;
 import logic.commands.ListCommand;
 import logic.commands.MarkCommand;
 import logic.commands.ToDoCommand;
@@ -24,7 +25,8 @@ public class Parser {
      *
      * @param command the raw user input command
      * @return a Command object representing the parsed command
-     * @throws InvalidCommandException if the command format is invalid or parameters are missing
+     * @throws InvalidCommandException if the command format is invalid or
+     *                                 parameters are missing
      */
     public static Command parseCommand(String command) throws InvalidCommandException {
         if (command.equals("bye")) {
@@ -43,6 +45,8 @@ public class Parser {
             return parseDeadlineCommand(command);
         } else if (command.startsWith("event ")) {
             return parseEventCommand(command);
+        } else if (command.startsWith("find ")) {
+            return parseFindCommand(command);
         } else {
             throw new InvalidCommandException("Sorry, please enter a valid command"
                     + "(mark / unmark / todo / deadline / event / list / delete / bye)");
@@ -71,7 +75,7 @@ public class Parser {
      * Parses a mark/unmark command and extracts the task index and mark status
      *
      * @param command the mark/unmark command string
-     * @param isDone true for mark command, false for unmark command
+     * @param isDone  true for mark command, false for unmark command
      * @return a MarkCommand with the task index and mark status
      * @throws InvalidCommandException if the command format is invalid
      */
@@ -133,7 +137,8 @@ public class Parser {
     }
 
     /**
-     * Parses an event command and extracts the task description, start date, and end date
+     * Parses an event command and extracts the task description, start date, and
+     * end date
      *
      * @param command the event command string
      * @return an EventCommand with description and date range
@@ -164,5 +169,20 @@ public class Parser {
         } catch (DateTimeParseException e) {
             throw new InvalidCommandException("Invalid date format");
         }
+    }
+
+    /**
+     * Parses a todo command and extracts the task description
+     *
+     * @param command the todo command string
+     * @return a ToDoCommand with the task description
+     * @throws InvalidCommandException if the description is empty
+     */
+    private static Command parseFindCommand(String command) throws InvalidCommandException {
+        String keyword = command.substring(5).trim();
+        if (keyword.isEmpty()) {
+            throw new InvalidCommandException("Keyword to find must not be empty");
+        }
+        return new FindCommand(keyword);
     }
 }

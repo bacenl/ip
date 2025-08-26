@@ -1,5 +1,6 @@
 package ui;
 
+import java.util.List;
 import java.util.Scanner;
 
 import models.Task;
@@ -48,7 +49,7 @@ public class Ui {
     /**
      * Displays the result of marking or unmarking a task
      *
-     * @param task the task that was marked/unmarked
+     * @param task   the task that was marked/unmarked
      * @param isDone true if the task was marked as done, false if unmarked
      */
     public void printMarkTask(Task task, boolean isDone) {
@@ -63,7 +64,7 @@ public class Ui {
     /**
      * Displays the result of deleting a task
      *
-     * @param task the task that was deleted
+     * @param task      the task that was deleted
      * @param taskCount the new total number of tasks after deletion
      */
     public void printDeleteTask(Task task, int taskCount) {
@@ -75,13 +76,25 @@ public class Ui {
     /**
      * Displays the result of adding a new task
      *
-     * @param task the task that was added
+     * @param task      the task that was added
      * @param taskCount the new total number of tasks after addition
      */
     public void printAddTask(Task task, int taskCount) {
         System.out.println("Got it. I've added this task:");
         System.out.println(task);
         System.out.printf("Now you have %d tasks in the list.\n", taskCount);
+    }
+
+    /**
+     * Displays the result of adding a new task
+     *
+     * @param filteredTasks the task that was added
+     */
+    public void printFind(List<Task> filteredTasks) {
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < filteredTasks.size(); i++) {
+            System.out.printf("%d. %s\n", i + 1, filteredTasks.get(i));
+        }
     }
 
     /**
