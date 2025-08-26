@@ -1,6 +1,6 @@
 package commons.exceptions;
 /**
- * InvalidCommandException
+ * Represents an exception due to an invalid command
  */
 public class InvalidCommandException extends Exception {
     public InvalidCommandException(String e) {
