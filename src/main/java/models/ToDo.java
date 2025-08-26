@@ -20,7 +20,7 @@ public class ToDo extends Task {
      */
     @JsonCreator
     public ToDo(@JsonProperty("name") String name,
-                @JsonProperty("isDone") boolean isDone) {
+            @JsonProperty("isDone") boolean isDone) {
         setName(name);
         setIsDone(isDone);
     }
