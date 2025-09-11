@@ -17,7 +17,7 @@ public class DeadlineCommand extends Command {
      * Constructs a deadline command with the specified task name and due date
      *
      * @param name the description of the deadline task
-     * @param due the due date for the deadline
+     * @param due  the due date for the deadline
      */
     public DeadlineCommand(String name, LocalDate due) {
         this.name = name;
@@ -28,12 +28,12 @@ public class DeadlineCommand extends Command {
      * Executes the deadline command by adding a new deadline task
      *
      * @param tasks the task list to add to
-     * @param ui the user interface for displaying results
+     * @param ui    the user interface for displaying results
      */
     @Override
-    public void execute(TaskList tasks, Ui ui) {
+    public String execute(TaskList tasks, Ui ui) {
         Deadline deadline = new Deadline(name, due);
         tasks.add(deadline);
-        ui.printAddTask(deadline, tasks.size());
+        return ui.printAddTask(deadline, tasks.size());
     }
 }

@@ -1,4 +1,4 @@
-package view;
+package yapper;
 
 import javafx.application.Application;
 

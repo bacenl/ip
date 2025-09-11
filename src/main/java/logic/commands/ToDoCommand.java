@@ -23,12 +23,12 @@ public class ToDoCommand extends Command {
      * Executes the todo command by adding a new todo task
      *
      * @param tasks the task list to add to
-     * @param ui the user interface for displaying results
+     * @param ui    the user interface for displaying results
      */
     @Override
-    public void execute(TaskList tasks, Ui ui) {
+    public String execute(TaskList tasks, Ui ui) {
         ToDo todo = new ToDo(name);
         tasks.add(todo);
-        ui.printAddTask(todo, tasks.size());
+        return ui.printAddTask(todo, tasks.size());
     }
 }
