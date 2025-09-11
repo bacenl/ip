@@ -23,15 +23,15 @@ public class DeleteCommand extends Command {
      * Executes the delete command by removing the specified task
      *
      * @param tasks the task list to remove from
-     * @param ui the user interface for displaying results
+     * @param ui    the user interface for displaying results
      */
     @Override
-    public void execute(TaskList tasks, Ui ui) {
+    public String execute(TaskList tasks, Ui ui) {
         try {
             Task removedTask = tasks.remove(index);
-            ui.printDeleteTask(removedTask, tasks.size());
+            return ui.printDeleteTask(removedTask, tasks.size());
         } catch (IndexOutOfBoundsException e) {
-            ui.printError("Invalid task number. Current list size is " + tasks.size());
+            return ui.printError("Invalid task number. Current list size is " + tasks.size());
         }
     }
 }

@@ -1,9 +1,14 @@
 [ {
   "@type" : "T",
   "name" : "hi",
-  "isDone" : false
+  "isDone" : true
 }, {
   "@type" : "T",
   "name" : "hi there",
   "isDone" : false
+}, {
+  "@type" : "D",
+  "name" : "boo",
+  "isDone" : false,
+  "due" : "12 Dec 2023"
 } ]

@@ -19,7 +19,7 @@ public class EventCommand extends Command {
      *
      * @param name the description of the event task
      * @param from the start date of the event
-     * @param to the end date of the event
+     * @param to   the end date of the event
      */
     public EventCommand(String name, LocalDate from, LocalDate to) {
         this.name = name;
@@ -31,12 +31,12 @@ public class EventCommand extends Command {
      * Executes the event command by adding a new event task
      *
      * @param tasks the task list to add to
-     * @param ui the user interface for displaying results
+     * @param ui    the user interface for displaying results
      */
     @Override
-    public void execute(TaskList tasks, Ui ui) {
+    public String execute(TaskList tasks, Ui ui) {
         Event event = new Event(name, from, to);
         tasks.add(event);
-        ui.printAddTask(event, tasks.size());
+        return ui.printAddTask(event, tasks.size());
     }
 }

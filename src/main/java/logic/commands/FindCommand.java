@@ -26,11 +26,11 @@ public class FindCommand extends Command {
      * @param ui    the user interface for displaying results
      */
     @Override
-    public void execute(TaskList tasks, Ui ui) {
+    public String execute(TaskList tasks, Ui ui) {
         try {
-            ui.printFind(tasks.filterTasksByKeyword(keyword));
+            return ui.printFind(tasks.filterTasksByKeyword(keyword));
         } catch (IndexOutOfBoundsException e) {
-            ui.printError("Invalid task number. Current list size is " + tasks.size());
+            return ui.printError("Invalid task number. Current list size is " + tasks.size());
         }
     }
 }
