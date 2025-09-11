@@ -16,7 +16,7 @@ public class Yapper {
 
     /**
      * Constructs a new Yapper chatbot instance.
-     * Initializes the UI, loads tasks from storage, and starts the main loop.
+     * Initializes the UI, loads tasks from storage, and starts the main loop
      */
     public Yapper() {
         this.ui = new Ui();

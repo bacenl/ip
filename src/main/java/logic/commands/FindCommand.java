@@ -10,17 +10,16 @@ public class FindCommand extends Command {
     private String keyword;
 
     /**
-     * Constructs a mark command with the specified task index and mark status
+     * Constructs a find command with the specified keyword
      *
-     * @param index  the index of the task to mark/unmark
-     * @param isDone true to mark as done, false to unmark
+     * @param keyword keyword to search for
      */
     public FindCommand(String keyword) {
         this.keyword = keyword;
     }
 
     /**
-     * Executes the mark command by updating the specified task's status
+     * Executes the find command by find the task by name
      *
      * @param tasks the task list to update
      * @param ui    the user interface for displaying results
