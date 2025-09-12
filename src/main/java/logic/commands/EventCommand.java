@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import models.Event;
 import models.TaskList;
+import storage.FileManager;
 import ui.Ui;
 
 /**
@@ -13,6 +14,7 @@ public class EventCommand extends Command {
     private String name;
     private LocalDate from;
     private LocalDate to;
+    private String tag;
 
     /**
      * Constructs an event command with the specified task name and date range
@@ -21,10 +23,11 @@ public class EventCommand extends Command {
      * @param from the start date of the event
      * @param to   the end date of the event
      */
-    public EventCommand(String name, LocalDate from, LocalDate to) {
+    public EventCommand(String name, LocalDate from, LocalDate to, String tag) {
         this.name = name;
         this.from = from;
         this.to = to;
+        this.tag = tag;
     }
 
     /**
@@ -35,8 +38,9 @@ public class EventCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui) {
-        Event event = new Event(name, from, to);
+        Event event = new Event(name, from, to, tag);
         tasks.add(event);
+        FileManager.saveTasks(tasks.getTasks());
         return ui.getAddTaskResponse(event, tasks.size());
     }
 }

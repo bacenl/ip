@@ -36,6 +36,11 @@ public class MainWindow extends AnchorPane {
         this.yapper = yapper;
     }
 
+    /** Print the greeting */
+    public void showGreeting() {
+        dialogContainer.getChildren().addAll(DialogBox.getYapperDialog(yapper.getGreet(), yapperImage));
+    }
+
     /**
      * Creates two dialog boxes, one echoing user input and the other containing
      * Yapper's reply and then appends them to
