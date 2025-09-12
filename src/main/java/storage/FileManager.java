@@ -17,7 +17,8 @@ import models.Task;
 /**
  * The FileManager class handles saving and loading tasks to/from a JSON file.
  * Uses Jackson library for JSON serialization and deserialization.
- * The data is stored in a file located at {@value #DATA_DIR}/{@value #DATA_FILE}.
+ * The data is stored in a file located at
+ * {@value #DATA_DIR}/{@value #DATA_FILE}.
  */
 public class FileManager {
     /**
@@ -47,8 +48,13 @@ public class FileManager {
                 Files.createDirectories(dirPath);
             }
 
+            assert Files.exists(dirPath) : "File directory should exist";
+
             String output = objectMapper.writerFor(objectMapper.getTypeFactory()
                     .constructCollectionType(List.class, Task.class)).writeValueAsString(tasks);
+
+            Path file = Paths.get(DATA_FILE);
+            assert Files.exists(file) : "File should exist";
 
             FileWriter fw = new FileWriter(DATA_FILE);
             fw.write(output);
@@ -62,8 +68,10 @@ public class FileManager {
      * Loads tasks from a JSON file into an ArrayList.
      *
      * If the data file doesn't exist, returns an empty ArrayList.
-     * If the file exists but is corrupted or cannot be read, returns an empty ArrayList
+     * If the file exists but is corrupted or cannot be read, returns an empty
+     * ArrayList
      * and prints an error message.
+     *
      * @return an ArrayList containing the loaded tasks. Returns an empty list
      *         if the file doesn't exist or cannot be read.
      */
