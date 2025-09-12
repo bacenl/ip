@@ -16,7 +16,7 @@ public class ToDo extends Task {
     }
 
     /**
-     * Constructs a ToDo with name and isDone
+     * Constructs a ToDo with name and isDone for deserialization
      */
     @JsonCreator
     public ToDo(@JsonProperty("name") String name,

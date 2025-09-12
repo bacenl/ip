@@ -36,7 +36,7 @@ public class Deadline extends Task {
     }
 
     /**
-     * Constructs a Deadline with name and isDone
+     * Constructs a Deadline with name and isDone for deserialization
      */
     @JsonCreator
     public Deadline(@JsonProperty("name") String name,
