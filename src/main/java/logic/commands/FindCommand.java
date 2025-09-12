@@ -30,7 +30,7 @@ public class FindCommand extends Command {
         try {
             return ui.getFindResponse(tasks.filterTasksByKeyword(keyword));
         } catch (IndexOutOfBoundsException e) {
-            return ui.getErrorResponse(FIND_ERROR_MESSAGE  + tasks.size());
+            return ui.getErrorResponse(FIND_ERROR_MESSAGE + tasks.size());
         }
     }
 }

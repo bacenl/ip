@@ -34,6 +34,6 @@ public class DeadlineCommand extends Command {
     public String execute(TaskList tasks, Ui ui) {
         Deadline deadline = new Deadline(name, due);
         tasks.add(deadline);
-        return ui.printAddTask(deadline, tasks.size());
+        return ui.getAddTaskResponse(deadline, tasks.size());
     }
 }

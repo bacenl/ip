@@ -30,7 +30,7 @@ public class DeleteCommand extends Command {
     @Override
     public String execute(TaskList tasks, Ui ui) {
         try {
-            Task removedTask = tasks.remove(index);
+            Task removedTask = tasks.remove(index - 1);
             return ui.getDeleteTaskResponse(removedTask, tasks.size());
         } catch (IndexOutOfBoundsException e) {
             return ui.getErrorResponse(DELETE_ERROR_MESSAGE + tasks.size());

@@ -68,7 +68,7 @@ public class Parser {
         Pattern pattern = Pattern.compile("^delete (\\d+)$");
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
-            int index = Integer.parseInt(matcher.group(1)) - 1;
+            int index = Integer.parseInt(matcher.group(1));
             assert index > 0 : "Task index should be more than 0";
             return new DeleteCommand(index);
         } else {
@@ -88,7 +88,7 @@ public class Parser {
         Pattern pattern = Pattern.compile("^(mark|unmark) (\\d+)$");
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
-            int index = Integer.parseInt(matcher.group(2)) - 1;
+            int index = Integer.parseInt(matcher.group(2));
             assert index > 0 : "Task index should be more than 0";
             return new MarkCommand(index, isDone);
         } else {

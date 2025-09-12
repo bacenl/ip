@@ -33,7 +33,7 @@ public class MarkCommand extends Command {
     public String execute(TaskList tasks, Ui ui) {
         try {
             tasks.markTask(index, isDone);
-            return ui.getMarkTaskResponse(tasks.get(index), isDone);
+            return ui.getMarkTaskResponse(tasks.get(index - 1), isDone);
         } catch (IndexOutOfBoundsException e) {
             return ui.getErrorResponse(MARK_ERROR_MESSAGE + tasks.size());
         }
