@@ -7,6 +7,7 @@ import ui.Ui;
  * Represents a command to find a keyword
  */
 public class FindCommand extends Command {
+    private static final String FIND_ERROR_MESSAGE = "Invalid task number. Current list size is ";
     private String keyword;
 
     /**
@@ -27,9 +28,9 @@ public class FindCommand extends Command {
     @Override
     public String execute(TaskList tasks, Ui ui) {
         try {
-            return ui.printFind(tasks.filterTasksByKeyword(keyword));
+            return ui.getFindResponse(tasks.filterTasksByKeyword(keyword));
         } catch (IndexOutOfBoundsException e) {
-            return ui.printError("Invalid task number. Current list size is " + tasks.size());
+            return ui.getErrorResponse(FIND_ERROR_MESSAGE + tasks.size());
         }
     }
 }

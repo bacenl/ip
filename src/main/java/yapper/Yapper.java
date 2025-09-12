@@ -34,12 +34,12 @@ public class Yapper {
             return response;
 
         } catch (InvalidCommandException e) {
-            return ui.printError(e.getMessage());
+            return ui.getErrorResponse(e.getMessage());
         }
 
     }
 
     public String getGreet() {
-        return ui.printGreet();
+        return ui.getGreetResponse();
     }
 }

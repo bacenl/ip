@@ -1,9 +1,5 @@
 [ {
   "@type" : "T",
-  "name" : "hi",
-  "isDone" : true
-}, {
-  "@type" : "T",
   "name" : "hi there",
   "isDone" : false
 }, {

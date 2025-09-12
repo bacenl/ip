@@ -58,7 +58,8 @@ public class Event extends Task {
     }
 
     /**
-     * Custom getter for JSON serialization that returns due date as String
+     * Custom getter for JSON serialization that returns due date as String for
+     * deserialization
      */
     @JsonGetter("from")
     public String getFromAsString() {

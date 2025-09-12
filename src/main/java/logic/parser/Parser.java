@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import commons.exceptions.InvalidCommandException;
 import logic.commands.Command;
+import logic.commands.CommandType;
 import logic.commands.DeadlineCommand;
 import logic.commands.DeleteCommand;
 import logic.commands.EventCommand;
@@ -20,6 +21,9 @@ import logic.commands.ToDoCommand;
  * Deals with making sense of the user command
  */
 public class Parser {
+    private static final String INVALID_COMMAND_MESSAGE = "Sorry, please enter a valid command"
+            + "(mark / unmark / todo / deadline / event / list / delete / bye)";
+
     /**
      * Parses the user command string and returns a corresponding Command object
      *
@@ -29,27 +33,27 @@ public class Parser {
      *                                 parameters are missing
      */
     public static Command parseCommand(String command) throws InvalidCommandException {
-        if (command.equals("bye")) {
+        if (command.equals(CommandType.EXIT.getInputToMatch())) {
             return new ExitCommand();
-        } else if (command.equals("list")) {
+
+        } else if (command.equals(CommandType.LIST.getInputToMatch())) {
             return new ListCommand();
-        } else if (command.startsWith("delete ")) {
+        } else if (command.startsWith(CommandType.DELETE.getInputToMatch())) {
             return parseDeleteCommand(command);
-        } else if (command.startsWith("mark ")) {
+        } else if (command.startsWith(CommandType.MARK.getInputToMatch())) {
             return parseMarkCommand(command, true);
-        } else if (command.startsWith("unmark ")) {
+        } else if (command.startsWith(CommandType.UNMARK.getInputToMatch())) {
             return parseMarkCommand(command, false);
-        } else if (command.startsWith("todo ")) {
+        } else if (command.startsWith(CommandType.ADD_TODO.getInputToMatch())) {
             return parseTodoCommand(command);
-        } else if (command.startsWith("deadline ")) {
+        } else if (command.startsWith(CommandType.ADD_DEADLINE.getInputToMatch())) {
             return parseDeadlineCommand(command);
-        } else if (command.startsWith("event ")) {
+        } else if (command.startsWith(CommandType.ADD_EVENT.getInputToMatch())) {
             return parseEventCommand(command);
-        } else if (command.startsWith("find ")) {
+        } else if (command.startsWith(CommandType.FIND.getInputToMatch())) {
             return parseFindCommand(command);
         } else {
-            throw new InvalidCommandException("Sorry, please enter a valid command"
-                    + "(mark / unmark / todo / deadline / event / list / delete / bye)");
+            throw new InvalidCommandException(INVALID_COMMAND_MESSAGE);
         }
     }
 
@@ -64,7 +68,7 @@ public class Parser {
         Pattern pattern = Pattern.compile("^delete (\\d+)$");
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
-            int index = Integer.parseInt(matcher.group(1)) - 1;
+            int index = Integer.parseInt(matcher.group(1));
             assert index > 0 : "Task index should be more than 0";
             return new DeleteCommand(index);
         } else {
@@ -84,7 +88,7 @@ public class Parser {
         Pattern pattern = Pattern.compile("^(mark|unmark) (\\d+)$");
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
-            int index = Integer.parseInt(matcher.group(2)) - 1;
+            int index = Integer.parseInt(matcher.group(2));
             assert index > 0 : "Task index should be more than 0";
             return new MarkCommand(index, isDone);
         } else {

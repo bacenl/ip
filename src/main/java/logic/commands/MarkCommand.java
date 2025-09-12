@@ -7,6 +7,7 @@ import ui.Ui;
  * Represents a command to mark or unmark a task
  */
 public class MarkCommand extends Command {
+    private static final String MARK_ERROR_MESSAGE = "Invalid task number. Current list size is ";
     private int index;
     private boolean isDone;
 
@@ -32,9 +33,9 @@ public class MarkCommand extends Command {
     public String execute(TaskList tasks, Ui ui) {
         try {
             tasks.markTask(index, isDone);
-            return ui.printMarkTask(tasks.get(index), isDone);
+            return ui.getMarkTaskResponse(tasks.get(index - 1), isDone);
         } catch (IndexOutOfBoundsException e) {
-            return ui.printError("Invalid task number. Current list size is " + tasks.size());
+            return ui.getErrorResponse(MARK_ERROR_MESSAGE + tasks.size());
         }
     }
 }
