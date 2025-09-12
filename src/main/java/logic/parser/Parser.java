@@ -2,6 +2,8 @@ package logic.parser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -104,11 +106,16 @@ public class Parser {
      * @throws InvalidCommandException if the description is empty
      */
     private static Command parseTodoCommand(String command) throws InvalidCommandException {
-        String name = command.substring(5).trim();
+        Map<String, String> params = parseCommandWithFlags(command.substring(5).trim(), "tag");
+
+        String name = params.get("name");
+        String tag = params.get("tag");
+
         if (name.isEmpty()) {
             throw new InvalidCommandException("Description of ToDo cannot be empty");
         }
-        return new ToDoCommand(name);
+
+        return new ToDoCommand(name, tag);
     }
 
     /**
@@ -119,13 +126,11 @@ public class Parser {
      * @throws InvalidCommandException if parameters are missing or invalid
      */
     private static Command parseDeadlineCommand(String command) throws InvalidCommandException {
-        String[] parts = command.substring(9).trim().split("/by", 2);
-        if (parts.length != 2) {
-            throw new InvalidCommandException("Need /by parameter");
-        }
+        Map<String, String> params = parseCommandWithFlags(command.substring(9).trim(), "by", "tag");
 
-        String name = parts[0].trim();
-        String rawBy = parts[1].trim();
+        String name = params.get("name");
+        String rawBy = params.get("by");
+        String tag = params.get("tag");
 
         if (name.isEmpty()) {
             throw new InvalidCommandException("Description of Deadline cannot be empty");
@@ -136,7 +141,7 @@ public class Parser {
 
         try {
             LocalDate by = LocalDate.parse(rawBy);
-            return new DeadlineCommand(name, by);
+            return new DeadlineCommand(name, by, tag);
         } catch (DateTimeParseException e) {
             throw new InvalidCommandException("Invalid date format");
         }
@@ -151,15 +156,12 @@ public class Parser {
      * @throws InvalidCommandException if parameters are missing or invalid
      */
     private static Command parseEventCommand(String command) throws InvalidCommandException {
-        String[] parts = command.substring(6).trim().split("/from|/to");
-        if (parts.length != 3) {
-            throw new InvalidCommandException("Need both /from and /to parameters");
-        }
+        Map<String, String> params = parseCommandWithFlags(command.substring(6).trim(), "from", "to", "tag");
 
-        boolean isFromFirst = command.contains("/from") && (command.indexOf("/from") < command.indexOf("/to"));
-        String description = parts[0].trim();
-        String rawFrom = isFromFirst ? parts[1].trim() : parts[2].trim();
-        String rawTo = isFromFirst ? parts[2].trim() : parts[1].trim();
+        String description = params.get("name");
+        String rawFrom = params.get("from");
+        String rawTo = params.get("to");
+        String tag = params.get("tag");
 
         if (description.isEmpty()) {
             throw new InvalidCommandException("Description of Event cannot be empty");
@@ -171,18 +173,18 @@ public class Parser {
         try {
             LocalDate from = LocalDate.parse(rawFrom);
             LocalDate to = LocalDate.parse(rawTo);
-            return new EventCommand(description, from, to);
+            return new EventCommand(description, from, to, tag);
         } catch (DateTimeParseException e) {
             throw new InvalidCommandException("Invalid date format");
         }
     }
 
     /**
-     * Parses a todo command and extracts the task description
+     * Parses a find command and extracts the search keyword
      *
-     * @param command the todo command string
-     * @return a ToDoCommand with the task description
-     * @throws InvalidCommandException if the description is empty
+     * @param command the find command string
+     * @return a FindCommand with the search keyword
+     * @throws InvalidCommandException if the keyword is empty
      */
     private static Command parseFindCommand(String command) throws InvalidCommandException {
         String keyword = command.substring(5).trim();
@@ -190,5 +192,90 @@ public class Parser {
             throw new InvalidCommandException("Keyword to find must not be empty");
         }
         return new FindCommand(keyword);
+    }
+
+    /**
+     * Parses a command string with flags and returns a map of parameter values.
+     * The first part before any flags is stored with key "name".
+     * Flags can appear in any order.
+     *
+     * @param commandString the command string to parse (without the command prefix)
+     * @param flags         the expected flags (without the leading '/')
+     * @return a map containing parameter values with flag names as keys
+     * @throws InvalidCommandException if the command format is invalid
+     */
+    private static Map<String, String> parseCommandWithFlags(String commandString, String... flags)
+            throws InvalidCommandException {
+        Map<String, String> params = new HashMap<>();
+
+        // Initialize all flags with empty strings
+        for (String flag : flags) {
+            params.put(flag, "");
+        }
+
+        // The main description is everything before the first flag
+        int firstFlagIndex = findFirstFlagIndex(commandString, flags);
+        if (firstFlagIndex == -1) {
+            // No flags found, everything is the description
+            params.put("name", commandString.trim());
+            return params;
+        }
+
+        // Extract the description (before the first flag)
+        String description = commandString.substring(0, firstFlagIndex).trim();
+        params.put("name", description);
+
+        // Process the remaining string with flags
+        String remaining = commandString.substring(firstFlagIndex);
+
+        // Use regex to extract all flag-value pairs
+        Pattern flagPattern = Pattern.compile("/(\\w+)\\s+([^/]+)");
+        Matcher matcher = flagPattern.matcher(remaining);
+
+        while (matcher.find()) {
+            String flagName = matcher.group(1);
+            String flagValue = matcher.group(2).trim();
+
+            // Only store flags that we expect
+            if (contains(flags, flagName)) {
+                params.put(flagName, flagValue);
+            }
+        }
+
+        return params;
+    }
+
+    /**
+     * Finds the index of the first occurrence of any flag in the given string
+     *
+     * @param input the string to search in
+     * @param flags the flags to search for (without leading '/')
+     * @return the index of the first flag found, or -1 if no flags found
+     */
+    private static int findFirstFlagIndex(String input, String[] flags) {
+        int firstIndex = -1;
+        for (String flag : flags) {
+            int index = input.indexOf("/" + flag);
+            if (index != -1 && (firstIndex == -1 || index < firstIndex)) {
+                firstIndex = index;
+            }
+        }
+        return firstIndex;
+    }
+
+    /**
+     * Checks if an array contains a specific string
+     *
+     * @param array the array to search in
+     * @param value the value to search for
+     * @return true if the array contains the value, false otherwise
+     */
+    private static boolean contains(String[] array, String value) {
+        for (String item : array) {
+            if (item.equals(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

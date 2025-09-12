@@ -2,6 +2,7 @@ package logic.commands;
 
 import models.TaskList;
 import models.ToDo;
+import storage.FileManager;
 import ui.Ui;
 
 /**
@@ -9,14 +10,16 @@ import ui.Ui;
  */
 public class ToDoCommand extends Command {
     private String name;
+    private String tag;
 
     /**
      * Constructs a todo command with the specified task name
      *
      * @param name the description of the todo task
      */
-    public ToDoCommand(String name) {
+    public ToDoCommand(String name, String tag) {
         this.name = name;
+        this.tag = tag;
     }
 
     /**
@@ -27,8 +30,9 @@ public class ToDoCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui) {
-        ToDo todo = new ToDo(name);
+        ToDo todo = new ToDo(name, tag);
         tasks.add(todo);
+        FileManager.saveTasks(tasks.getTasks());
         return ui.getAddTaskResponse(todo, tasks.size());
     }
 }

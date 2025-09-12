@@ -2,6 +2,7 @@ package models;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -36,14 +37,36 @@ public class Deadline extends Task {
     }
 
     /**
+     * Constructs a Deadline with name and isDone = false
+     */
+    public Deadline(String name, LocalDate due, String tag) {
+        setName(name);
+        setIsDone(false);
+        setTag(tag);
+        this.due = due;
+    }
+
+    /**
+     * Constructs a Deadline with name and isDone
+     */
+    public Deadline(String name, boolean isDone, LocalDate due, String tag) {
+        setName(name);
+        setIsDone(isDone);
+        setTag(tag);
+        this.due = due;
+    }
+
+    /**
      * Constructs a Deadline with name and isDone for deserialization
      */
     @JsonCreator
     public Deadline(@JsonProperty("name") String name,
             @JsonProperty("isDone") boolean isDone,
-            @JsonProperty("due") String due) {
+            @JsonProperty("due") String due,
+            @JsonProperty("tag") String tag) {
         setName(name);
         setIsDone(isDone);
+        setTag(tag);
         this.due = LocalDate.parse(due, DATE_FORMATTER);
     }
 
@@ -65,6 +88,9 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return String.format("[D]%s (by: %s)", super.toString(), due.format(DATE_FORMATTER));
+        if (super.getTag().equals(null) || super.getTag().isEmpty()) {
+            return String.format("[D]%s (by: %s)", super.toString(), due.format(DATE_FORMATTER));
+        }
+        return String.format("[D]%s (by: %s) #tag: %s", super.toString(), due.format(DATE_FORMATTER), super.getTag());
     }
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import models.Deadline;
 import models.TaskList;
+import storage.FileManager;
 import ui.Ui;
 
 /**
@@ -12,6 +13,7 @@ import ui.Ui;
 public class DeadlineCommand extends Command {
     private String name;
     private LocalDate due;
+    private String tag;
 
     /**
      * Constructs a deadline command with the specified task name and due date
@@ -19,9 +21,10 @@ public class DeadlineCommand extends Command {
      * @param name the description of the deadline task
      * @param due  the due date for the deadline
      */
-    public DeadlineCommand(String name, LocalDate due) {
+    public DeadlineCommand(String name, LocalDate due, String tag) {
         this.name = name;
         this.due = due;
+        this.tag = tag;
     }
 
     /**
@@ -32,8 +35,9 @@ public class DeadlineCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui) {
-        Deadline deadline = new Deadline(name, due);
+        Deadline deadline = new Deadline(name, due, tag);
         tasks.add(deadline);
+        FileManager.saveTasks(tasks.getTasks());
         return ui.getAddTaskResponse(deadline, tasks.size());
     }
 }

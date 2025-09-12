@@ -18,9 +18,31 @@ public class Event extends Task {
     /**
      * Constructs a Event with name and isDone = false
      */
-    public Event(String name, LocalDate from, LocalDate to) {
+    public Event(String name, LocalDate from, LocalDate to, String tag) {
         setName(name);
         setIsDone(false);
+        setTag(tag);
+        this.from = from;
+        this.to = to;
+    }
+
+    /**
+     * Constructs a Event with name and isDone
+     */
+    public Event(String name, boolean isDone, LocalDate from, LocalDate to) {
+        setName(name);
+        setIsDone(isDone);
+        this.from = from;
+        this.to = to;
+    }
+
+    /**
+     * Constructs a Event with name and isDone
+     */
+    public Event(String name, boolean isDone, LocalDate from, LocalDate to, String tag) {
+        setName(name);
+        setIsDone(isDone);
+        setTag(tag);
         this.from = from;
         this.to = to;
     }
@@ -32,21 +54,13 @@ public class Event extends Task {
     public Event(@JsonProperty("name") String name,
             @JsonProperty("isDone") boolean isDone,
             @JsonProperty("from") String from,
-            @JsonProperty("to") String to) {
+            @JsonProperty("to") String to,
+            @JsonProperty("tag") String tag) {
         setName(name);
         setIsDone(isDone);
+        setTag(tag);
         this.from = LocalDate.parse(from, DATE_FORMATTER);
         this.to = LocalDate.parse(to, DATE_FORMATTER);
-    }
-
-    /**
-     * Constructs a Event with name and isDone
-     */
-    public Event(String name, boolean isDone, LocalDate from, LocalDate to) {
-        setName(name);
-        setIsDone(isDone);
-        this.from = from;
-        this.to = to;
     }
 
     public LocalDate getFrom() {
@@ -84,7 +98,11 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return String.format("[E]%s (from: %s to: %s)",
-                super.toString(), from.format(DATE_FORMATTER), to.format(DATE_FORMATTER));
+        if (super.getTag().equals(null) || super.getTag().isEmpty()) {
+            return String.format("[E]%s (from: %s to: %s)",
+                    super.toString(), from.format(DATE_FORMATTER), to.format(DATE_FORMATTER));
+        }
+        return String.format("[E]%s (from: %s to: %s) #tags: %s",
+                super.toString(), from.format(DATE_FORMATTER), to.format(DATE_FORMATTER), super.getTag());
     }
 }
