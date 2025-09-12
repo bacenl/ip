@@ -69,6 +69,7 @@ public class Parser {
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
             int index = Integer.parseInt(matcher.group(1)) - 1;
+            assert index > 0 : "Task index should be more than 0";
             return new DeleteCommand(index);
         } else {
             throw new InvalidCommandException("Please ensure the following format 'delete (positive integer)'");
@@ -88,6 +89,7 @@ public class Parser {
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
             int index = Integer.parseInt(matcher.group(2)) - 1;
+            assert index > 0 : "Task index should be more than 0";
             return new MarkCommand(index, isDone);
         } else {
             throw new InvalidCommandException("Please ensure the following format 'mark / unmark (positive integer)'");

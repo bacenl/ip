@@ -18,6 +18,7 @@ public class MarkCommand extends Command {
      * @param isDone true to mark as done, false to unmark
      */
     public MarkCommand(int index, boolean isDone) {
+        assert index > 0 : "Task index should be more than 0";
         this.index = index;
         this.isDone = isDone;
     }
