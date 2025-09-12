@@ -29,6 +29,6 @@ public class ToDoCommand extends Command {
     public String execute(TaskList tasks, Ui ui) {
         ToDo todo = new ToDo(name);
         tasks.add(todo);
-        return ui.printAddTask(todo, tasks.size());
+        return ui.getAddTaskResponse(todo, tasks.size());
     }
 }

@@ -18,14 +18,14 @@ public class Ui {
     /**
      * Displays the greeting message when the chatbot starts
      */
-    public String printGreet() {
+    public String getGreetResponse() {
         return "Hello! I'm Yapper. \nWhat can I do for you?";
     }
 
     /**
      * Displays the exit message when the chatbot terminates
      */
-    public String printExit() {
+    public String getExitResponse() {
         return "Bye. Hope to see you again soon!";
     }
 
@@ -34,7 +34,7 @@ public class Ui {
      *
      * @param tasks the TaskList containing tasks to display
      */
-    public String printList(TaskList tasks) {
+    public String getListResponse(TaskList tasks) {
         StringBuilder response = new StringBuilder();
         response.append("Here are the tasks in your list:\n");
         for (int i = 0; i < tasks.size(); i++) {
@@ -49,7 +49,7 @@ public class Ui {
      * @param task   the task that was marked/unmarked
      * @param isDone true if the task was marked as done, false if unmarked
      */
-    public String printMarkTask(Task task, boolean isDone) {
+    public String getMarkTaskResponse(Task task, boolean isDone) {
         StringBuilder response = new StringBuilder();
         if (isDone) {
             response.append("Nice! I have marked this task as done:\n");
@@ -66,7 +66,7 @@ public class Ui {
      * @param task      the task that was deleted
      * @param taskCount the new total number of tasks after deletion
      */
-    public String printDeleteTask(Task task, int taskCount) {
+    public String getDeleteTaskResponse(Task task, int taskCount) {
         StringBuilder response = new StringBuilder();
         response.append("Noted. I have removed this task:\n");
         response.append(task + "\n");
@@ -80,7 +80,7 @@ public class Ui {
      * @param task      the task that was added
      * @param taskCount the new total number of tasks after addition
      */
-    public String printAddTask(Task task, int taskCount) {
+    public String getAddTaskResponse(Task task, int taskCount) {
         StringBuilder response = new StringBuilder();
         response.append("Got it. I've added this task:\n");
         response.append(task + "\n");
@@ -93,7 +93,7 @@ public class Ui {
      *
      * @param filteredTasks the task that was added
      */
-    public String printFind(List<Task> filteredTasks) {
+    public String getFindResponse(List<Task> filteredTasks) {
         StringBuilder response = new StringBuilder();
         response.append("Here are the matching tasks in your list:\n");
         for (int i = 0; i < filteredTasks.size(); i++) {
@@ -107,7 +107,7 @@ public class Ui {
      *
      * @param errorMessage the error message to display
      */
-    public String printError(String errorMessage) {
+    public String getErrorResponse(String errorMessage) {
         return errorMessage;
     }
 }

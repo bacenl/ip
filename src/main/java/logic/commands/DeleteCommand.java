@@ -8,6 +8,7 @@ import ui.Ui;
  * Represents a command to delete a task
  */
 public class DeleteCommand extends Command {
+    private static final String DELETE_ERROR_MESSAGE = "Invalid task number. Current list size is ";
     private int index;
 
     /**
@@ -29,9 +30,9 @@ public class DeleteCommand extends Command {
     public String execute(TaskList tasks, Ui ui) {
         try {
             Task removedTask = tasks.remove(index);
-            return ui.printDeleteTask(removedTask, tasks.size());
+            return ui.getDeleteTaskResponse(removedTask, tasks.size());
         } catch (IndexOutOfBoundsException e) {
-            return ui.printError("Invalid task number. Current list size is " + tasks.size());
+            return ui.getErrorResponse(DELETE_ERROR_MESSAGE + tasks.size());
         }
     }
 }

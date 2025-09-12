@@ -37,6 +37,6 @@ public class EventCommand extends Command {
     public String execute(TaskList tasks, Ui ui) {
         Event event = new Event(name, from, to);
         tasks.add(event);
-        return ui.printAddTask(event, tasks.size());
+        return ui.getAddTaskResponse(event, tasks.size());
     }
 }
