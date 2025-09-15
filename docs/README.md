@@ -1,6 +1,6 @@
 # Yapper User Guide
 
-(https://johndoe.github.io/ip/Ui.png)
+(https://bacenl.github.io/ip/Ui.png)
 
 Welcome to Yapper, a CLI-based task manager application!
 
