@@ -18,7 +18,6 @@ public class MarkCommand extends Command {
      * @param isDone true to mark as done, false to unmark
      */
     public MarkCommand(int index, boolean isDone) {
-        assert index > 0 : "Task index should be more than 0";
         this.index = index;
         this.isDone = isDone;
     }
@@ -32,7 +31,7 @@ public class MarkCommand extends Command {
     @Override
     public String execute(TaskList tasks, Ui ui) {
         try {
-            tasks.markTask(index, isDone);
+            tasks.markTask(index - 1, isDone);
             return ui.getMarkTaskResponse(tasks.get(index - 1), isDone);
         } catch (IndexOutOfBoundsException e) {
             return ui.getErrorResponse(MARK_ERROR_MESSAGE + tasks.size());

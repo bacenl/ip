@@ -22,6 +22,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("Yapper Chatbot");
             fxmlLoader.<MainWindow>getController().setYapper(yapper); // inject the Duke instance
             fxmlLoader.<MainWindow>getController().showGreeting();
             stage.show();
