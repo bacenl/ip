@@ -1,6 +1,7 @@
 package logic.commands;
 
 import models.TaskList;
+import storage.FileManager;
 import ui.Ui;
 
 /**
@@ -32,6 +33,7 @@ public class MarkCommand extends Command {
     public String execute(TaskList tasks, Ui ui) {
         try {
             tasks.markTask(index - 1, isDone);
+            FileManager.saveTasks(tasks.getTasks());
             return ui.getMarkTaskResponse(tasks.get(index - 1), isDone);
         } catch (IndexOutOfBoundsException e) {
             return ui.getErrorResponse(MARK_ERROR_MESSAGE + tasks.size());
