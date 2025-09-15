@@ -2,6 +2,7 @@ package logic.commands;
 
 import models.Task;
 import models.TaskList;
+import storage.FileManager;
 import ui.Ui;
 
 /**
@@ -31,6 +32,7 @@ public class DeleteCommand extends Command {
     public String execute(TaskList tasks, Ui ui) {
         try {
             Task removedTask = tasks.remove(index - 1);
+            FileManager.saveTasks(tasks.getTasks());
             return ui.getDeleteTaskResponse(removedTask, tasks.size());
         } catch (IndexOutOfBoundsException e) {
             return ui.getErrorResponse(DELETE_ERROR_MESSAGE + tasks.size());
