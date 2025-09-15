@@ -16,16 +16,6 @@ public class ToDo extends Task {
     }
 
     /**
-     * Constructs a ToDo with name and isDone for deserialization
-     */
-    @JsonCreator
-    public ToDo(@JsonProperty("name") String name,
-            @JsonProperty("isDone") boolean isDone) {
-        setName(name);
-        setIsDone(isDone);
-    }
-
-    /**
      * Constructs a ToDo with name and tag with isDone = false
      */
     public ToDo(String name, String tag) {
@@ -48,7 +38,7 @@ public class ToDo extends Task {
 
     @Override
     public String toString() {
-        if (super.getTag().equals(null)) {
+        if (super.getTag().equals(null) || super.getTag().isEmpty()) {
             return String.format("[T]%s", super.toString());
         }
         return String.format("[T]%s #tag: %s", super.toString(), super.getTag());
