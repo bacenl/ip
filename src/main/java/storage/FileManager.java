@@ -54,7 +54,6 @@ public class FileManager {
                     .constructCollectionType(List.class, Task.class)).writeValueAsString(tasks);
 
             Path file = Paths.get(DATA_FILE);
-            assert Files.exists(file) : "File should exist";
 
             FileWriter fw = new FileWriter(DATA_FILE);
             fw.write(output);
