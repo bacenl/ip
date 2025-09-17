@@ -53,8 +53,6 @@ public class FileManager {
             String output = objectMapper.writerFor(objectMapper.getTypeFactory()
                     .constructCollectionType(List.class, Task.class)).writeValueAsString(tasks);
 
-            Path file = Paths.get(DATA_FILE);
-
             FileWriter fw = new FileWriter(DATA_FILE);
             fw.write(output);
             fw.close();
